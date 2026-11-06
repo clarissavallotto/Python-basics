@@ -1,0 +1,11 @@
+Transaction_ID,Transaction_Date,Customer_ID,Product_ID,Prod_Cat,Prod_Description,Prod_Sub_Cat,Campaign,Cost_Per_Unit,Discount,On_Sale,Price_Per_Unit,Profit_Per_Unit,Quant,Sale_Amount,Total_Cost,Total_Product_Sale,Total_Profit
+T_ID_606388,01/01/2020,C_ID_50781,P_ID_100007,Women,White Ric-Rac Dress,Dresses,No Campaign,25.5,0.0,No,51.0,25.5,1,51.0,25.5,51.0,25.5
+T_ID_606400,01/01/2020,C_ID_51715,P_ID_100118,Homeware,Set of 3 Animal Canvas Prints,Design,No Campaign,14.1,0.0,No,23.5,9.4,1,23.5,14.1,23.5,9.4
+T_ID_606420,01/01/2020,C_ID_51821,P_ID_100020,Women,Lodge Women's Shirt,Tops,New Customer Offer,14.8,0.1,Yes,37.0,22.2,2,33.3,29.6,66.6,37.0
+T_ID_606567,01/01/2020,C_ID_40771,P_ID_100081,Children,White Polo Two Pack,Girls_wear,No Campaign,3.675,0.0,No,7.5,3.825,1,7.5,3.675,7.5,3.825
+T_ID_617247,02/01/2020,C_ID_42087,P_ID_100110,Homeware,Double Wall Mug,Design,No Campaign,7.5,0.0,No,12.5,5.0,1,12.5,7.5,12.5,5.0
+T_ID_617298,02/01/2020,C_ID_41715,P_ID_100058,Men,Pink Slim Fit Double Cuff Shirt,Shirts,No Campaign,17.98,0.0,No,29.0,11.02,1,29.0,17.98,29.0,11.02
+T_ID_619090,03/01/2020,C_ID_38834,P_ID_100028,Women,Ayres Chambray Top,Tops,New Customer Offer,25.2,0.1,Yes,63.0,37.8,1,56.7,25.2,56.7,31.5
+T_ID_619289,03/01/2020,C_ID_44560,P_ID_100010,Men,Black Signature Point Court Shoes,Shoes,No Campaign,24.2,0.0,No,44.0,19.8,2,44.0,48.4,88.0,39.6
+T_ID_619403,03/01/2020,C_ID_52203,P_ID_100080,Children,Hawaiian Print Sun Safe Two Piece,Girls_wear,No Campaign,8.575,0.0,No,17.5,8.925,2,17.5,17.15,35.0,17.85
+T_ID_619462,04/01/2020,C_ID_45506,P_ID_100108,Homeware,Feathers Printed Bed Set,Bed_Bath,No Campaign,22.75,0.0,No,35.0,12.25,2,35.0,45.5,70.0,24.5
