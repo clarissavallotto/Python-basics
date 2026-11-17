@@ -1,3 +1,8 @@
+import zipfile
+
+with zipfile.ZipFile("code_data.zip", "r") as zip_ref:
+    zip_ref.extractall("code_data")
+
 # ==================================================
 # INTRO TO PROGRAMMING: ARITHMETIC AND VARIABLES
 # ==================================================
@@ -2391,7 +2396,7 @@ series2 = pd.Series(
 # ==========================================
 
 # Read the wine reviews CSV file into a DataFrame.
-wine_reviews = pd.read_csv("winemag-data-130k-v2.csv")
+wine_reviews = pd.read_csv("/content/code_data/code_data/winemag-data-130k-v2.csv")
 
 
 # ==========================================
@@ -2410,7 +2415,7 @@ print(wine_reviews.head())
 # ==========================================
 
 # Use the first CSV column as the DataFrame index.
-wine_reviews = pd.read_csv("winemag-data-130k-v2.csv", index_col=0)
+wine_reviews = pd.read_csv("/content/code_data/code_data/winemag-data-130k-v2.csv", index_col=0)
 
 # Display the first five rows.
 print(wine_reviews.head())
@@ -2429,7 +2434,7 @@ import pandas as pd
 
 # Load the wine reviews dataset.
 # Use the first CSV column as the DataFrame index.
-reviews = pd.read_csv("winemag-data-130k-v2.csv", index_col=0)
+reviews = pd.read_csv("/content/code_data/code_data/winemag-data-130k-v2.csv", index_col=0)
 
 # Display a maximum of five rows in pandas output.
 pd.set_option('display.max_rows', 5)
@@ -2577,7 +2582,7 @@ import numpy as np
 pd.set_option('display.max_rows', 5)
 
 # Load the wine reviews dataset.
-reviews = pd.read_csv("winemag-data-130k-v2.csv", index_col=0)
+reviews = pd.read_csv("/content/code_data/code_data/winemag-data-130k-v2.csv", index_col=0)
 
 
 # ==========================================
@@ -2660,7 +2665,7 @@ reviews.country + " - " + reviews.region_1
 import pandas as pd
 
 # Load the wine reviews dataset.
-reviews = pd.read_csv("winemag-data-130k-v2.csv", index_col=0)
+reviews = pd.read_csv("/content/code_data/code_data/winemag-data-130k-v2.csv", index_col=0)
 
 # Limit displayed rows.
 pd.set_option("display.max_rows", 5)
@@ -2742,7 +2747,7 @@ import pandas as pd
 
 # Load the wine reviews dataset
 # index_col=0 uses the first column as the DataFrame index
-reviews = pd.read_csv("winemag-data-130k-v2.csv", index_col=0)
+reviews = pd.read_csv("/content/code_data/code_data/winemag-data-130k-v2.csv", index_col=0)
 
 # Limit displayed rows
 pd.set_option('display.max_rows', 5)
@@ -2812,7 +2817,7 @@ pd.set_option('display.max_rows', 5)
 
 # Load the wine reviews dataset
 # Use the first column as the DataFrame index
-reviews = pd.read_csv("winemag-data-130k-v2.csv", index_col=0)
+reviews = pd.read_csv("/content/code_data/code_data/winemag-data-130k-v2.csv", index_col=0)
 
 
 # ============================================================
@@ -2845,10 +2850,10 @@ reviews.rename_axis("wines", axis='rows').rename_axis("fields", axis='columns')
 # ============================================================
 
 # Load Canadian YouTube trending videos
-canadian_youtube = pd.read_csv("CAvideos.csv")
+canadian_youtube = pd.read_csv("/content/code_data/code_data/CAvideos.csv")
 
 # Load British YouTube trending videos
-british_youtube = pd.read_csv("GBvideos.csv")
+british_youtube = pd.read_csv("/content/code_data/code_data/GBvideos.csv")
 
 # Combine the two DataFrames vertically
 youtube_combined = pd.concat([canadian_youtube, british_youtube])
@@ -2886,7 +2891,7 @@ import numpy as np
 
 # Load the NFL play-by-play dataset
 nfl_data = pd.read_csv(
-    "NFL Play by Play 2009-2017 (v4).csv"
+    "/content/code_data/code_data/NFL Play by Play 2009-2017 (v4).csv"
 )
 
 # Set a random seed for reproducibility
@@ -3105,7 +3110,7 @@ import matplotlib.pyplot as plt
 import datetime
 
 # Load the landslides dataset
-landslides = pd.read_csv("catalog.csv")
+landslides = pd.read_csv("/content/code_data/code_data/catalog.csv")
 
 # Set a random seed for reproducibility
 np.random.seed(0)
@@ -3244,7 +3249,7 @@ print(after.decode("ascii"))
 # 5. DETECT FILE ENCODING
 # ------------------------------------------------------------
 
-file_path = "ks-projects-201612.csv"
+file_path = "/content/code_data/code_data/ks-projects-201612.csv"
 
 # Open the file in binary mode and inspect its first 10,000 bytes
 with open(file_path, "rb") as rawdata:
@@ -3293,7 +3298,7 @@ np.random.seed(0)
 # 2. LOAD THE DATASET
 # ------------------------------------------------------------
 
-professors = pd.read_csv("pakistan_intellectual_capital.csv")
+professors = pd.read_csv("/content/code_data/code_data/pakistan_intellectual_capital.csv")
 
 # Inspect the first five rows
 print(professors.head())
@@ -3406,7 +3411,7 @@ print("Setup Complete")
 # ------------------------------------------------------------
 
 # Specify the location of the CSV file
-fifa_filepath = "fifa.csv"
+fifa_filepath = "/content/code_data/code_data/fifa.csv"
 
 # Read the CSV file into a DataFrame
 fifa_data = pd.read_csv(fifa_filepath, index_col="Date", parse_dates=True)
@@ -3459,7 +3464,7 @@ print("Setup Complete")
 # ------------------------------------------------------------
 
 # Specify the CSV file path
-spotify_filepath = "spotify.csv"
+spotify_filepath = "/content/code_data/code_data/spotify.csv"
 
 # Load the dataset
 spotify_data = pd.read_csv(spotify_filepath, index_col="Date", parse_dates=True)
@@ -3542,7 +3547,7 @@ pd.plotting.register_matplotlib_converters()
 # ------------------------------------------------------------
 
 # Path to the flight delays CSV file
-flight_filepath = "flight_delays.csv"
+flight_filepath = "/content/code_data/code_data/flight_delays.csv"
 
 # Load the dataset and use Month as the index
 flight_data = pd.read_csv(flight_filepath, index_col="Month")
@@ -3614,7 +3619,7 @@ pd.plotting.register_matplotlib_converters()
 # 2. LOAD THE DATASET
 # ------------------------------------------------------------
 
-insurance_filepath = "insurance.csv"
+insurance_filepath = "/content/code_data/code_data/insurance.csv"
 
 insurance_data = pd.read_csv(insurance_filepath)
 
@@ -3708,7 +3713,7 @@ pd.plotting.register_matplotlib_converters()
 # ------------------------------------------------------------
 
 # Path to the CSV file
-iris_filepath = "iris.csv"
+iris_filepath = "/content/code_data/code_data/iris.csv"
 
 # Load the dataset using Id as the index
 iris_data = pd.read_csv(iris_filepath, index_col="Id")
@@ -3792,7 +3797,7 @@ pd.plotting.register_matplotlib_converters()
 # 2. LOAD THE SPOTIFY DATASET
 # ------------------------------------------------------------
 
-spotify_filepath = "spotify.csv"
+spotify_filepath = "/content/code_data/code_data/spotify.csv"
 
 spotify_data = pd.read_csv(spotify_filepath, index_col="Date", parse_dates=True)
 
@@ -3895,7 +3900,7 @@ sns.set_style("whitegrid")
 # ------------------------------------------------------------
 
 # Replace this path with your actual dataset path
-file_path = "spotify.csv"
+file_path = "/content/code_data/code_data/spotify.csv"
 # Read the CSV file
 data = pd.read_csv(file_path)
 
@@ -4035,7 +4040,7 @@ print("Setup Complete")
 # ==========================================
 
 # Replace this path with your Kaggle dataset path
-data = pd.read_csv("spotify.csv")
+data = pd.read_csv("/content/code_data/code_data/spotify.csv")
 
 # Inspect the dataset
 print(data.head())
