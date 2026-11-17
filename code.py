@@ -2869,6 +2869,9 @@ right = british_youtube.set_index(['title', 'trending_date'])
 youtube_joined = left.join(right, lsuffix='_CAN', rsuffix='_UK')
 
 
+# pip install fuzzywuzzy
+
+
 # ==================================================
 # DATA CLEANING: HANDLING MISSING VALUES
 # ==================================================
