@@ -5073,3 +5073,124 @@ anova_table = sm.stats.anova_lm(
 )
 
 print(anova_table)
+
+# ============================================================
+# MERGING DATAFRAMES WITH pd.merge()
+# ============================================================
+
+# Create two example DataFrames
+customers = pd.DataFrame({
+    "Customer_ID": [1, 2, 3, 4],
+    "Customer_Name": ["Alice", "Bob", "Charlie", "David"]
+})
+
+orders = pd.DataFrame({
+    "Customer_ID": [1, 2, 2, 5],
+    "Order_ID": [101, 102, 103, 104],
+    "Amount": [250, 150, 300, 400]
+})
+
+# 1. INNER MERGE
+# Keep only rows with matching keys in both DataFrames.
+
+inner_merge = pd.merge(
+    customers,
+    orders,
+    on="Customer_ID",
+    how="inner"
+)
+
+print(inner_merge)
+
+
+# 2. LEFT MERGE
+# Keep all rows from the left DataFrame (customers).
+# Add matching information from the right DataFrame (orders).
+
+left_merge = pd.merge(
+    customers,
+    orders,
+    on="Customer_ID",
+    how="left"
+)
+
+print(left_merge)
+
+
+# 3. RIGHT MERGE
+# Keep all rows from the right DataFrame (orders).
+
+right_merge = pd.merge(
+    customers,
+    orders,
+    on="Customer_ID",
+    how="right"
+)
+
+print(right_merge)
+
+
+# 4. OUTER MERGE
+# Keep all rows from both DataFrames.
+# Unmatched values are filled with NaN.
+
+outer_merge = pd.merge(
+    customers,
+    orders,
+    on="Customer_ID",
+    how="outer"
+)
+
+print(outer_merge)
+
+
+# 5. MERGE USING DIFFERENT COLUMN NAMES
+# left_on and right_on specify the matching columns.
+
+# Example:
+# merged_data = pd.merge(
+#     dataframe1,
+#     dataframe2,
+#     left_on="Customer_ID",
+#     right_on="Client_ID",
+#     how="inner"
+# )
+
+
+# 6. MERGE USING MULTIPLE KEYS
+
+# Example:
+# merged_data = pd.merge(
+#     dataframe1,
+#     dataframe2,
+#     on=["Customer_ID", "Transaction_Date"],
+#     how="inner"
+# )
+
+
+# 7. MERGE WITH INDICATOR
+# Shows whether each row came from the left DataFrame,
+# the right DataFrame, or both.
+
+indicator_merge = pd.merge(
+    customers,
+    orders,
+    on="Customer_ID",
+    how="outer",
+    indicator=True
+)
+
+print(indicator_merge)
+
+
+# 8. MERGE WITH SUFFIXES
+# Useful when both DataFrames contain columns with the same name.
+
+# Example:
+# merged_data = pd.merge(
+#     dataframe1,
+#     dataframe2,
+#     on="Customer_ID",
+#     how="inner",
+#     suffixes=("_left", "_right")
+# )
