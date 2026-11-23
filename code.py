@@ -4066,3 +4066,1010 @@ plt.show()
 
 # Save the figure as an image
 plt.savefig("my_visualization.png", bbox_inches="tight")
+
+
+# ============================================================
+# ADDITIONAL CODE
+# ============================================================
+
+
+# ============================================================
+# 1. PANDAS: LOADING AND EXPLORING A REAL DATASET
+# ============================================================
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+pd.options.display.float_format = '{:,.2f}'.format
+
+# Load the retail transactions dataset
+datafile_name = "/content/code_data/code_data/urban_wear_transactions.csv"
+abt = pd.read_csv(datafile_name, index_col=0)
+
+# Explore the DataFrame
+print(abt.shape)
+print(abt.head(10))
+print(abt.info())
+print(abt.describe())
+
+# Access rows and columns using loc and iloc
+print(abt.loc["T_ID_579441"])
+print(abt.iloc[0])
+print(abt.iloc[0:5, 0:4])
+
+# Access a specific value
+print(abt.loc["T_ID_579441", "Prod_Cat"])
+
+# Modify a specific value
+# Example:
+# abt.loc["T_ID_579441", "Discount"] = 5.00
+
+
+# ============================================================
+# 2. FREQUENCY TABLES AND CROSS-TABULATIONS
+# ============================================================
+
+# Frequency of each product category
+print(abt["Prod_Cat"].value_counts())
+
+# Frequency of marketing campaigns
+print(abt["Campaign"].value_counts())
+
+# Cross-tabulation: product category and campaign
+category_campaign = pd.crosstab(
+    abt["Prod_Cat"],
+    abt["Campaign"]
+)
+
+print(category_campaign)
+
+# Cross-tabulation with percentages
+category_campaign_percentage = pd.crosstab(
+    abt["Prod_Cat"],
+    abt["Campaign"],
+    normalize="all"
+)
+
+print(category_campaign_percentage)
+
+# Include row and column totals
+category_campaign_totals = pd.crosstab(
+    abt["Prod_Cat"],
+    abt["Campaign"],
+    margins=True
+)
+
+print(category_campaign_totals)
+
+
+# ============================================================
+# 3. PIVOT TABLES
+# ============================================================
+
+# Average total profit by product category
+pivot_profit = pd.pivot_table(
+    abt,
+    values="Total_Profit",
+    index="Prod_Cat",
+    aggfunc="mean"
+)
+
+print(pivot_profit)
+
+# Average total profit by product category and campaign
+pivot_campaign = pd.pivot_table(
+    abt,
+    values="Total_Profit",
+    index="Prod_Cat",
+    columns="Campaign",
+    aggfunc="mean"
+)
+
+print(pivot_campaign)
+
+# Multiple aggregation functions
+pivot_summary = pd.pivot_table(
+    abt,
+    values="Total_Profit",
+    index="Prod_Cat",
+    aggfunc=["mean", "min", "max", "median"]
+)
+
+print(pivot_summary)
+
+# Multiple values and aggregation functions
+pivot_multiple = pd.pivot_table(
+    abt,
+    values=["Total_Profit", "Total_Product_Sale"],
+    index="Prod_Cat",
+    aggfunc=["mean", "sum"]
+)
+
+print(pivot_multiple)
+
+
+# ============================================================
+# 4. FILTERING AND SAMPLING DATA
+# ============================================================
+
+# Filter transactions belonging to the Women category
+women_transactions = abt[abt["Prod_Cat"] == "Women"]
+
+print(women_transactions.head())
+
+# Filter transactions with a total profit greater than 50
+high_profit = abt[abt["Total_Profit"] > 50]
+
+print(high_profit.head())
+
+# Combine multiple filtering conditions
+high_profit_women = abt[
+    (abt["Prod_Cat"] == "Women") &
+    (abt["Total_Profit"] > 50)
+]
+
+print(high_profit_women.head())
+
+# Filter transactions using isin()
+selected_categories = abt[
+    abt["Prod_Cat"].isin(["Women", "Men"])
+]
+
+print(selected_categories.head())
+
+# Random sample of 10 transactions
+print(abt.sample(n=10, random_state=42))
+
+# Random sample containing 20% of the transactions
+print(abt.sample(frac=0.20, random_state=42))
+
+
+# ============================================================
+# 5. CREATING AND RECODING VARIABLES
+# ============================================================
+
+# Create a new variable representing total revenue
+abt["Revenue"] = abt["Price_Per_Unit"] * abt["Quant"]
+
+# Create a Boolean variable
+abt["High_Profit"] = abt["Total_Profit"] > 25
+
+# Create a categorical variable using np.where()
+abt["Profit_Category"] = np.where(
+    abt["Total_Profit"] > 25,
+    "High Profit",
+    "Low Profit"
+)
+
+# Replace existing values
+abt["Campaign"] = abt["Campaign"].replace({
+    "No Campaign": "None",
+    "New Customer Offer": "New Customer"
+})
+
+# Check the new variables
+print(abt[[
+    "Total_Profit",
+    "Revenue",
+    "High_Profit",
+    "Profit_Category"
+]].head())
+
+
+# ============================================================
+# 6. GROUPING AND AGGREGATION
+# ============================================================
+
+# Group by marketing campaign and calculate average profit
+abt_grp1 = abt.groupby(["Campaign"])
+
+print(
+    abt_grp1["Total_Profit"].agg(["mean"])
+)
+
+# Group by sale status and calculate summary statistics
+abt_grp2 = abt.groupby(["On_Sale"])
+
+print(
+    abt_grp2["Total_Profit"].agg(["min", "max", "median"])
+)
+
+# Group by product category and calculate total profit
+abt_grp3 = abt.groupby(["Prod_Cat"])
+
+category_profit = abt_grp3["Total_Profit"].sum()
+
+print(category_profit)
+
+# Display the results using a bar chart
+category_profit.plot(
+    kind="bar",
+    figsize=(7, 4),
+    ylabel="Overall Total Profit",
+    xlabel="Product Category",
+    rot=0
+)
+
+plt.show()
+
+# Multiple aggregation functions for several columns
+group_summary = abt.groupby("Prod_Cat").agg({
+    "Total_Profit": ["mean", "sum", "min", "max"],
+    "Total_Product_Sale": ["mean", "sum"],
+    "Quant": ["sum", "mean"]
+})
+
+print(group_summary)
+
+# Count transactions by date and product category
+daily_category_counts = (
+    abt.groupby("Transaction_Date")["Prod_Cat"]
+    .value_counts()
+    .reset_index()
+)
+
+print(daily_category_counts)
+
+
+# ============================================================
+# 7. RESHAPING DATA: PIVOT AND MELT
+# ============================================================
+
+# Create a wide-format table showing transaction counts
+short_wide_counts = pd.crosstab(
+    abt["Transaction_Date"],
+    abt["Prod_Cat"]
+)
+
+# Replace missing values with zero
+short_wide_counts = short_wide_counts.fillna(0)
+
+print(short_wide_counts.head(10))
+
+# Reset the index to restore Transaction_Date as a column
+short_wide_counts = short_wide_counts.reset_index()
+
+# Convert wide-format data into long-format data
+long_skinny_counts = pd.melt(
+    short_wide_counts,
+    id_vars=["Transaction_Date"],
+    value_vars=["Children", "Homeware", "Men", "Women"],
+    var_name="Prod_Cat",
+    value_name="Count"
+)
+
+print(long_skinny_counts.head(10))
+
+# Convert long-format data back into wide format
+wide_counts_again = long_skinny_counts.pivot(
+    index="Transaction_Date",
+    columns="Prod_Cat",
+    values="Count"
+)
+
+print(wide_counts_again.head(10))
+
+
+# ============================================================
+# 8. COMBINING DATAFRAMES
+# ============================================================
+
+# Concatenate DataFrames vertically
+# dataframe1 and dataframe2 must already exist.
+#
+# combined_data = pd.concat(
+#     [dataframe1, dataframe2],
+#     axis=0
+# )
+
+# Concatenate DataFrames horizontally
+#
+# combined_columns = pd.concat(
+#     [dataframe1, dataframe2],
+#     axis=1
+# )
+
+# Join DataFrames using their index
+#
+# joined_data = dataframe1.join(
+#     dataframe2,
+#     how="left"
+# )
+
+
+# ============================================================
+# 9. ADVANCED DATA VISUALISATION WITH SEABORN
+# ============================================================
+
+# Load the cleaned retail transactions dataset
+datafile_name = "/content/code_data/code_data/urban_wear_transactions_clean.csv"
+abt = pd.read_csv(datafile_name, index_col=0)
+
+# Parallel box plots: total product sales by category
+plt.figure(figsize=(8, 4.5))
+
+sns.boxplot(
+    data=abt,
+    y="Total_Product_Sale",
+    x="Prod_Cat"
+)
+
+plt.show()
+
+# Box plots with different colours
+plt.figure(figsize=(8, 4.5))
+
+sns.boxplot(
+    data=abt,
+    y="Total_Product_Sale",
+    x="Prod_Cat",
+    hue="Prod_Cat",
+    palette="Set2",
+    width=0.7
+)
+
+plt.show()
+
+# Total profit by product category
+sns.boxplot(
+    data=abt,
+    y="Total_Profit",
+    x="Prod_Cat",
+    hue="Prod_Cat",
+    palette="Set3"
+)
+
+plt.show()
+
+# Total profit by campaign and product category
+sns.boxplot(
+    data=abt,
+    y="Total_Profit",
+    x="Campaign",
+    hue="Prod_Cat",
+    palette="Set3"
+)
+
+plt.show()
+
+
+# ============================================================
+# 10. SMALL MULTIPLE HISTOGRAMS
+# ============================================================
+
+# Distribution of total product sales by product category
+sns.displot(
+    data=abt,
+    x="Total_Product_Sale",
+    col="Prod_Cat",
+    height=3
+)
+
+plt.show()
+
+# Histograms with multiple plots per row
+sns.displot(
+    data=abt,
+    x="Total_Product_Sale",
+    col="Prod_Cat",
+    hue="Prod_Cat",
+    bins=10,
+    legend=False,
+    col_wrap=2,
+    height=2.8,
+    aspect=1.5
+)
+
+plt.show()
+
+# Distribution of total profit by product category
+sns.displot(
+    data=abt,
+    x="Total_Profit",
+    col="Prod_Cat",
+    hue="Prod_Cat",
+    bins=10,
+    col_wrap=2,
+    height=2.8,
+    aspect=1.5
+)
+
+plt.show()
+
+# Distribution of total profit by campaign
+sns.displot(
+    data=abt,
+    x="Total_Profit",
+    col="Campaign",
+    hue="Campaign",
+    bins=10,
+    height=2.8,
+    aspect=1.5
+)
+
+plt.show()
+
+
+# ============================================================
+# 11. SCATTER PLOTS AND PAIR PLOTS
+# ============================================================
+
+# Compare cost per unit and total product sales
+plt.figure(figsize=(5.5, 4.5))
+
+sns.scatterplot(
+    data=abt,
+    x="Cost_Per_Unit",
+    y="Total_Product_Sale"
+)
+
+plt.show()
+
+# Add product category as the colour variable
+plt.figure(figsize=(5.5, 4.5))
+
+sns.scatterplot(
+    data=abt,
+    x="Cost_Per_Unit",
+    y="Total_Product_Sale",
+    hue="Prod_Cat"
+)
+
+plt.show()
+
+# Compare price and profit per unit
+plt.figure(figsize=(5.5, 4.5))
+
+sns.scatterplot(
+    data=abt,
+    x="Price_Per_Unit",
+    y="Profit_Per_Unit"
+)
+
+plt.show()
+
+# Add product category to the scatter plot
+plt.figure(figsize=(5.5, 4.5))
+
+sns.scatterplot(
+    data=abt,
+    x="Price_Per_Unit",
+    y="Profit_Per_Unit",
+    hue="Prod_Cat"
+)
+
+plt.show()
+
+# Pair plot: compare several numerical variables
+sns.pairplot(
+    data=abt,
+    vars=[
+        "Total_Cost",
+        "Total_Product_Sale",
+        "Total_Profit"
+    ],
+    hue="Prod_Cat"
+)
+
+plt.show()
+
+# Pair plot with additional numerical variables
+sns.pairplot(
+    data=abt,
+    vars=[
+        "Price_Per_Unit",
+        "Profit_Per_Unit",
+        "Total_Cost",
+        "Total_Product_Sale",
+        "Total_Profit"
+    ],
+    hue="Prod_Cat"
+)
+
+plt.show()
+
+
+# ============================================================
+# 12. SMALL MULTIPLE BAR PLOTS
+# ============================================================
+
+# Count transactions by product category and campaign
+sns.catplot(
+    data=abt,
+    x="Prod_Cat",
+    col="Campaign",
+    kind="count",
+    height=4,
+    aspect=1.2
+)
+
+plt.show()
+
+# Examine On_Sale and product sub-categories
+sns.catplot(
+    data=abt,
+    x="On_Sale",
+    col="Prod_Sub_Cat",
+    kind="count",
+    col_wrap=2,
+    height=2,
+    aspect=1.2
+)
+
+plt.show()
+
+# Equivalent cross-tabulation
+print(
+    pd.crosstab(
+        abt["Prod_Cat"],
+        abt["Campaign"]
+    )
+)
+
+
+# ============================================================
+# 13. NUMPY ARRAYS: ONE-DIMENSIONAL ARRAYS
+# ============================================================
+
+# Create a one-dimensional array
+a = np.array([12, 18, 4, 12, 20, 0, 37, 87])
+
+print(a)
+
+# Array attributes
+print(a.shape)
+print(a.ndim)
+print(a.size)
+print(a.dtype)
+
+# Create an array containing floating-point values
+b = np.array([0.3, 0.12, 1.4, 2.3, 4.5])
+
+print(b)
+print(b.dtype)
+
+# Access individual elements
+print(a[1])
+print(a[-1])
+
+# Modify an element
+a[1] = 42
+
+print(a)
+
+# Slicing
+print(a[3:6])
+print(a[2:])
+print(a[:5])
+
+# Modify a segment of an array
+a[2:] = 42
+
+print(a)
+
+
+# ============================================================
+# 14. NUMPY ARRAYS: ARGMAX AND ARRAY OPERATIONS
+# ============================================================
+
+# Weekly sales
+weekly_sales = np.array([
+    4567, 2341, 1987, 2345, 9876, 1021, 871
+])
+
+weekdays = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday"
+]
+
+# Find the index of the maximum sales value
+max_sales_day = weekly_sales.argmax()
+
+print("Most sales are on", weekdays[max_sales_day])
+
+# Sales in the second week
+week_2_sales = np.array([
+    3456, 1234, 908, 9762, 2134, 8643, 103
+])
+
+# Add the two arrays
+combined_sales = weekly_sales + week_2_sales
+
+print(combined_sales)
+
+# Find the day with the highest combined sales
+max_sales_day = combined_sales.argmax()
+
+print("Most sales are on", weekdays[max_sales_day])
+
+
+# ============================================================
+# 15. NUMPY ARRAYS: TWO-DIMENSIONAL ARRAYS
+# ============================================================
+
+# Create a two-dimensional array
+m = np.array([
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+])
+
+print(m)
+
+# Array attributes
+print(m.dtype)
+print(m.ndim)
+print(m.shape)
+print(m.size)
+
+# Access individual elements
+print(m[0, 1])
+print(m[2, 1])
+
+# Slicing
+print(m[1:3, 0:2])
+print(m[1:, :2])
+print(m[1, :])
+print(m[:, 2])
+
+
+# ============================================================
+# 16. CREATING NUMPY ARRAYS WITH ZEROS AND ONES
+# ============================================================
+
+# Create an array filled with zeros
+all_zeros = np.zeros((100, 100))
+
+print(all_zeros)
+
+# Create an array filled with ones
+all_ones = np.ones((20, 100))
+
+print(all_ones)
+
+# Create a 9 x 9 array
+pattern = np.zeros((9, 9))
+
+print(pattern)
+
+# Fill the middle square with 1
+pattern[1:8, 1:8] = 1
+
+print(pattern)
+
+# Fill a smaller square with 2
+pattern[2:7, 2:7] = 2
+
+print(pattern)
+
+# Fill an even smaller square with 3
+pattern[3:6, 3:6] = 3
+
+print(pattern)
+
+# Change the central element to 4
+pattern[4, 4] = 4
+
+print(pattern)
+
+# Visualise the array
+plt.imshow(pattern)
+plt.show()
+
+
+# ============================================================
+# 17. NUMPY AND PRIME NUMBERS
+# ============================================================
+
+import math
+
+# Function to check whether a number is prime
+def isPrime(n):
+
+    if n == 2 or n == 3:
+        return True
+
+    if n % 2 == 0 or n < 2:
+        return False
+
+    for i in range(3, int(math.sqrt(n)) + 1, 2):
+
+        if n % i == 0:
+            return False
+
+    return True
+
+
+# Create a 10 x 10 array
+primes = np.zeros((10, 10))
+
+counter = 1
+
+# Check the integers from 1 to 100
+for i in range(primes.shape[0]):
+
+    for j in range(primes.shape[1]):
+
+        if isPrime(counter):
+            primes[i, j] = 1
+
+        counter = counter + 1
+
+print(primes)
+
+# Visualise the prime number pattern
+plt.imshow(primes)
+plt.show()
+
+
+# ============================================================
+# 18. CONFIDENCE INTERVALS
+# ============================================================
+
+import scipy.stats as st
+
+# Load the Titanic dataset
+datafile_name = "/content/code_data/code_data/Titanic.csv"
+dataset = pd.read_csv(datafile_name)
+
+print(dataset.head(10))
+
+# Confidence interval for the mean Age
+confidenceLevel = 0.95
+
+sampleMean = dataset["Age"].mean()
+sampleStandardError = dataset["Age"].sem()
+
+age_confidence_interval = st.norm.interval(
+    confidence=confidenceLevel,
+    loc=sampleMean,
+    scale=sampleStandardError
+)
+
+print("95% confidence interval for Age:")
+print(age_confidence_interval)
+
+# Confidence interval for the mean Fare
+confidenceLevel = 0.95
+
+sampleMean = dataset["Fare"].mean()
+sampleStandardError = dataset["Fare"].sem()
+
+fare_confidence_interval = st.norm.interval(
+    confidence=confidenceLevel,
+    loc=sampleMean,
+    scale=sampleStandardError
+)
+
+print("95% confidence interval for Fare:")
+print(fare_confidence_interval)
+
+
+# ============================================================
+# 19. HYPOTHESIS TESTING: CROSS-TABULATIONS
+# ============================================================
+
+from scipy.stats import chi2_contingency
+
+# Relationship between survival and passenger class
+contingency = pd.crosstab(
+    dataset["Survived"],
+    dataset["Pclass"]
+)
+
+print(contingency)
+
+# Normalised cross-tabulation
+print(
+    pd.crosstab(
+        dataset["Survived"],
+        dataset["Pclass"],
+        normalize="all"
+    )
+)
+
+# Cross-tabulation with totals
+print(
+    pd.crosstab(
+        dataset["Survived"],
+        dataset["Pclass"],
+        margins=True
+    )
+)
+
+# Normalise by rows
+print(
+    pd.crosstab(
+        dataset["Survived"],
+        dataset["Pclass"],
+        margins=True,
+        normalize="index"
+    )
+)
+
+# Normalise by columns
+print(
+    pd.crosstab(
+        dataset["Survived"],
+        dataset["Pclass"],
+        margins=True,
+        normalize="columns"
+    )
+)
+
+# Visualise the contingency table
+plt.figure(figsize=(12, 8))
+
+sns.heatmap(
+    contingency,
+    annot=True,
+    cmap="Blues",
+    fmt="d"
+)
+
+plt.show()
+
+
+# ============================================================
+# 20. CHI-SQUARE TEST OF INDEPENDENCE
+# ============================================================
+
+# H0: Survival and passenger class are independent.
+# H1: Survival and passenger class are associated.
+
+chi2_statistic, p_value, degrees_freedom, expected = (
+    chi2_contingency(contingency)
+)
+
+print("The Chi-Squared Statistic is:", chi2_statistic)
+print("The p-value for the test is:", p_value)
+print("The Degrees of Freedom are:", degrees_freedom)
+
+print("The expected frequencies table is:")
+print(expected)
+
+# Decision using a significance level of 0.05
+alpha = 0.05
+
+if p_value < alpha:
+    print("Reject H0: there is evidence of an association.")
+else:
+    print("Do not reject H0: there is insufficient evidence of an association.")
+
+
+# ============================================================
+# 21. CHI-SQUARE TEST: SURVIVAL AND SEX
+# ============================================================
+
+contingency_sex_survived = pd.crosstab(
+    dataset["Survived"],
+    dataset["Sex"]
+)
+
+print(contingency_sex_survived)
+
+# Visualise the contingency table
+plt.figure(figsize=(12, 8))
+
+sns.heatmap(
+    contingency_sex_survived,
+    annot=True,
+    cmap="Blues",
+    fmt="d"
+)
+
+plt.show()
+
+# Normalise by columns
+print(
+    pd.crosstab(
+        dataset["Survived"],
+        dataset["Sex"],
+        margins=True,
+        normalize="columns"
+    )
+)
+
+# Chi-square test of independence
+chi2_statistic, p_value, degrees_freedom, expected = (
+    chi2_contingency(contingency_sex_survived)
+)
+
+print("The Chi-Squared Statistic is:", chi2_statistic)
+print("The p-value for the test is:", p_value)
+print("The Degrees of Freedom are:", degrees_freedom)
+
+print("The expected frequencies table is:")
+print(expected)
+
+# Decision
+if p_value < 0.05:
+    print("Reject H0: survival and sex are associated.")
+else:
+    print("Do not reject H0: insufficient evidence of an association.")
+
+
+# ============================================================
+# 22. HYPOTHESIS TESTING USING ANOVA
+# ============================================================
+
+import statsmodels.api as sm
+from statsmodels.formula.api import ols
+
+# Examine Age according to survival status
+grouped_data = dataset.groupby("Survived")
+
+print(
+    grouped_data[["Age"]].describe()
+)
+
+# Visualise Age according to survival status
+sns.boxplot(
+    data=dataset,
+    x="Survived",
+    y="Age"
+)
+
+plt.show()
+
+# H0: Mean Age is equal for the two survival groups.
+# H1: Mean Age is different for the two survival groups.
+
+# Fit an ordinary least squares model
+model = ols(
+    "Age ~ C(Survived)",
+    data=dataset
+).fit()
+
+# Perform ANOVA
+anova_table = sm.stats.anova_lm(
+    model,
+    typ=2
+)
+
+print(anova_table)
+
+
+# ============================================================
+# 23. ANOVA: PASSENGER CLASS AND FARE
+# ============================================================
+
+# Examine Fare according to passenger class
+grouped_data = dataset.groupby("Pclass")
+
+print(
+    grouped_data[["Fare"]].describe()
+)
+
+# Visualise Fare according to passenger class
+sns.boxplot(
+    data=dataset,
+    x="Pclass",
+    y="Fare"
+)
+
+plt.show()
+
+# H0: Mean Fare is equal across passenger classes.
+# H1: At least one passenger class has a different mean Fare.
+
+# Fit an ordinary least squares model
+model = ols(
+    "Fare ~ C(Pclass)",
+    data=dataset
+).fit()
+
+# Perform ANOVA
+anova_table = sm.stats.anova_lm(
+    model,
+    typ=2
+)
+
+print(anova_table)
