@@ -2,7 +2,7 @@
 
 ## Overview
 
-`code.py` is an exhaustive, end-to-end educational script and reference guide covering the core pillars of Python programming and Data Science. It is structured sequentially from foundational syntax to advanced statistical hypothesis testing and data visualization.
+`code.py` is an end-to-end, progressive reference script covering the core pillars of Python programming and Data Science. It is structured sequentially from foundational syntax to advanced statistical hypothesis testing and data visualization.
 
 ---
 
