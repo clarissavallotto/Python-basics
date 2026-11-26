@@ -3298,7 +3298,7 @@ np.random.seed(0)
 # 2. LOAD THE DATASET
 # ------------------------------------------------------------
 
-professors = pd.read_csv("/content/code_data/code_data/pakistan_intellectual_capital.csv")
+professors = pd.read_csv("/content/code_data/code_data/intellectual_capital.csv")
 
 # Inspect the first five rows
 print(professors.head())
