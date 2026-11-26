@@ -1176,7 +1176,7 @@ def greet(who="Colin"):
 greet()
 
 # Specify the argument by parameter name.
-greet(who="Kaggle")
+greet(who="Jane")
 
 # Specify the argument directly.
 greet("world")
@@ -4039,7 +4039,7 @@ print("Setup Complete")
 # 3. LOAD DATASET
 # ==========================================
 
-# Replace this path with your Kaggle dataset path
+# Replace this path with your dataset path
 data = pd.read_csv("/content/code_data/code_data/spotify.csv")
 
 # Inspect the dataset
