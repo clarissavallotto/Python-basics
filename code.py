@@ -5194,3 +5194,191 @@ print(indicator_merge)
 #     how="inner",
 #     suffixes=("_left", "_right")
 # )
+
+# ============================================================
+# HORIZONTAL BAR CHARTS (barh)
+# ============================================================
+
+# Frequency of product sub-categories
+prod_sub_cat_freq = abt["Prod_Sub_Cat"].value_counts()
+
+# Basic horizontal bar chart
+prod_sub_cat_freq.plot(
+    kind="barh",
+    figsize=(7, 5)
+)
+plt.show()
+
+# Customised horizontal bar chart
+prod_sub_cat_freq.plot(
+    kind="barh",
+    figsize=(7, 5),
+    color="orange",
+    width=0.8,
+    xlabel="Number of Transactions",
+    ylabel="Sub-Category",
+    title="Product Sub-Category Frequencies"
+)
+plt.show()
+
+# Set the numeric axis range and tick locations
+prod_sub_cat_freq.plot(
+    kind="barh",
+    figsize=(7, 5),
+    color="orange",
+    width=0.8,
+    xlabel="Number of Transactions",
+    ylabel="Sub-Category",
+    title="Product Sub-Category Frequencies",
+    xlim=(0, 1250),
+    xticks=(0, 250, 500, 750, 1000, 1250)
+)
+plt.show()
+
+# Reverse the order of the bars
+reversed_sub_cat_freq = prod_sub_cat_freq.iloc[::-1]
+reversed_sub_cat_freq.plot(
+    kind="barh",
+    figsize=(7, 5),
+    color="orange",
+    width=0.8,
+    xlabel="Number of Transactions",
+    ylabel="Sub-Category",
+    title="Product Sub-Category Frequencies"
+)
+plt.show()
+
+# Campaign frequencies represented horizontally
+campaign_freq = abt["Campaign"].value_counts()
+campaign_freq.plot(
+    kind="barh",
+    figsize=(5, 4),
+    color="red",
+    rot=45,
+    width=0.9,
+    ylabel="Category",
+    xlabel="Category",
+    title="Category Frequency"
+)
+plt.show()
+
+
+# ============================================================
+# PIE CHARTS
+# ============================================================
+
+prod_cat_freq = abt["Prod_Cat"].value_counts()
+
+# Basic pie chart
+prod_cat_freq.plot(
+    kind="pie",
+    figsize=(5, 4),
+    title="Transaction Categories"
+)
+plt.show()
+
+# Apply a colour map
+prod_cat_freq.plot(
+    kind="pie",
+    figsize=(5, 4),
+    title="Transaction Categories",
+    colormap="tab10"
+)
+plt.show()
+
+# Add percentage labels and remove the default series label
+prod_cat_freq.plot(
+    kind="pie",
+    figsize=(5, 4),
+    title="Transaction Categories",
+    colormap="tab10",
+    autopct="%.1f%%",
+    ylabel=""
+)
+plt.show()
+
+
+# ============================================================
+# AREA PLOT
+# ============================================================
+
+# Count transactions per day, preserving the original row order
+transaction_freqs = abt["Transaction_Date"].value_counts(sort=False)
+first30_transaction_freqs = transaction_freqs.head(30)
+
+first30_transaction_freqs.plot(
+    kind="area",
+    figsize=(10, 4),
+    color="purple",
+    ylabel="Transactions",
+    title="Number of Transactions - First 30 Days",
+    ylim=(0, 40),
+    grid=True,
+    zorder=3
+)
+plt.show()
+
+
+# ============================================================
+# TRANSACTION COUNTS OVER TIME (RETAIL DATASET)
+# ============================================================
+
+# This is a transaction-date example; code.py's line charts use other datasets.
+last90_transaction_freqs = (
+    abt["Transaction_Date"].value_counts(sort=False).tail(90)
+)
+
+last90_transaction_freqs.plot(
+    kind="line",
+    figsize=(10, 5),
+    color="green",
+    lw=3,
+    title="Number of Transactions per Day over the Last 3 Months",
+    grid=True
+)
+plt.show()
+
+
+# ============================================================
+# STACKED BAR CHART FROM A NORMALISED CROSS-TABULATION
+# ============================================================
+
+# Distribution of product sub-categories within each campaign
+subcat_campaign_distribution = pd.crosstab(
+    abt["Prod_Sub_Cat"],
+    abt["Campaign"],
+    normalize="columns"
+)
+
+subcat_campaign_distribution.plot(
+    kind="bar",
+    figsize=(12, 6),
+    ylabel="Proportion",
+    title="Product Sub-Category Distribution by Campaign",
+    stacked=True
+)
+plt.show()
+
+
+# ============================================================
+# SAVE A PLOT IN MULTIPLE FILE FORMATS
+# ============================================================
+
+# Save the first-30-days transaction line chart as JPEG, PNG and PDF.
+ax = first30_transaction_freqs.plot(
+    kind="line",
+    figsize=(10, 4),
+    color="purple",
+    lw=3,
+    ylabel="Transactions",
+    title="Number of Transactions - First 30 Days",
+    ylim=(0, 40),
+    grid=True,
+    zorder=3
+)
+
+fig = ax.figure
+fig.savefig("lineplot.jpg", bbox_inches="tight")
+fig.savefig("lineplot.png", bbox_inches="tight")
+fig.savefig("lineplot.pdf", bbox_inches="tight")
+plt.show()
