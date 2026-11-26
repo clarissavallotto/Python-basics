@@ -52,7 +52,7 @@ The script loads and analyzes **11 distinct CSV datasets** extracted from `code_
 | `NFL Play by Play 2009-2017 (v4).csv` | Detailed play-by-play NFL game records. | Data Cleaning: Handling Missing Values |
 | `catalog.csv` | Global landslide catalog with dates and locations. | Data Cleaning: Parsing Dates |
 | `ks-projects-201612.csv` | Kickstarter crowdfunding projects (encoded in Windows-1252). | Data Cleaning: Character Encodings |
-| `pakistan_intellectual_capital.csv` | Academic profiles of Pakistani professors (messy country names). | Data Cleaning: Inconsistent Data Entry (`fuzzywuzzy`) |
+| `intellectual_capital.csv` | Academic profiles of professors (messy country names). | Data Cleaning: Inconsistent Data Entry (`fuzzywuzzy`) |
 | `fifa.csv` | Historical FIFA world rankings over time. | Data Visualization: Hello Seaborn (Line Charts) |
 | `spotify.csv` | Daily global streams of top songs in 2017–2018. | Data Visualization: Line Charts, Custom Styles, Final Project |
 | `flight_delays.csv` | Average monthly arrival delays across major US airlines. | Data Visualization: Bar Charts & Heatmaps |
